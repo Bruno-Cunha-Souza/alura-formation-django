@@ -1,5 +1,4 @@
 from rest_framework import serializers
-
 from school.models import Course, Registration, Student
 
 
@@ -31,3 +30,11 @@ class ListRegistrationStudentSerializer(serializers.ModelSerializer):
 
     def get_period(self, obj):
         return obj.get_period_display()
+
+
+class StudentSerializer(serializers.ModelSerializer):
+    student_name = serializers.CharField(source="studante.name")
+
+    class Meta:
+        model = Student
+        fields = ["student_name"]

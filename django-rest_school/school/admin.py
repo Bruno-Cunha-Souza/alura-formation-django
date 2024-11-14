@@ -19,7 +19,7 @@ admin.site.register(Course, CoursesAdmin)
 
 class RegistrationsAdmin(admin.ModelAdmin):
 	list_display = ('id', 'student', 'course', 'period', 'registration_date')
-	list_display_links = ('id')
+	list_display_links = ('id', 'student', 'course')
 	list_per_page = 10
 
 admin.site.register(Registration, RegistrationsAdmin)

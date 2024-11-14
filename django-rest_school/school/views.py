@@ -1,13 +1,19 @@
 from school.models import Course, Registration, Student
-from school.serializers import CourseSerializer, ListRegistrationStudentSerializer, RegistrationSerializer, StudentSerializer
-from rest_framework import generics, viewsets
-
+from school.serializers import CourseSerializer, ListRegistrationStudentSerializer, RegistrationSerializer, StudentSerializer, StudentSerializerV2
+from rest_framework import generics, viewsets, filters
+from django_filters.rest_framework import DjangoFilterBackend
 
 class StudentViewSet(viewsets.ModelViewSet):
-    queryset = Student.objects.all()
-    serializer_class = StudentSerializer
-
-
+    queryset = Student.objects.all().order_by('id')
+    filter_backends = [DjangoFilterBackend, filters.OrderingFilter, filters.SearchFilter]
+    ordering_fields = ['name']
+    search_fields = ['name', 'email', 'cpf']
+    
+    def get_serializer_class(self):
+        if self.request.version == 'v2':
+            return StudentSerializerV2
+        return StudentSerializer
+        
 class CourseViewSet(viewsets.ModelViewSet):
     queryset = Course.objects.all()
     serializer_class = CourseSerializer

@@ -71,3 +71,9 @@ flask db migrate -m "Initial migration."
 
 flask db upgrade
 ```
+
+## Project Certificates
+
+- [Certificate-1](https://cursos.alura.com.br/user/brunosouza-cup/course/django-rest-framework-construindo-apis-restful-zero/certificate)
+
+- [Certificate-2](https://cursos.alura.com.br/user/brunosouza-cup/course/django-rest-framework-validacoes-paginacao-filtros-versionamento-api/certificate)

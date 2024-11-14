@@ -8,22 +8,20 @@ class StudentSerializer(serializers.ModelSerializer):
         model = Student
         fields = ["id", "name", "email", "cpf", "data_birth", "cellphone"]
         
-        def validate(self, data):
-            if cpf_invalid(data['cpf']):
-                raise serializers.ValidationError({"cpf":"CPF must only contain numbers"})
-            if len(data['cpf']) != 11:
-                raise serializers.ValidationError({"cpf":"CPF must have 11 digits"})
-            
-            if name_invalid(data['name']):
-                raise serializers.ValidationError({"name":"Name must only contain letters"})
-            
-            if data_birth_invalid(data['data_birth']):
-                raise serializers.ValidationError({"data_birth":"Date of birth can't be greater than or equal to the current date"})
-            
-            if cellphone_invalid(data['cellphone']):
-                raise serializers.ValidationError({"cellphone":"Cellphone must have 13 digits"})
+    def validate(self, data):
+        if name_invalid(data['name']):
+            raise serializers.ValidationError({"name":"Name must only contain letters"})
+        
+        if cpf_invalid(data['cpf']):
+            raise serializers.ValidationError({"cpf":"invalid cpf"})
+        
+        if data_birth_invalid(data['data_birth']):
+            raise serializers.ValidationError({"data_birth":"Date of birth can't be greater than or equal to the current date"})
+        
+        if cellphone_invalid(data['cellphone']):
+            raise serializers.ValidationError({"cellphone":"Cellphone must have 13 digits"})
 
-            return data
+        return data
 
 class CourseSerializer(serializers.ModelSerializer):
     class Meta:
@@ -47,10 +45,16 @@ class ListRegistrationStudentSerializer(serializers.ModelSerializer):
     def get_period(self, obj):
         return obj.get_period_display()
 
-
-class StudentSerializer(serializers.ModelSerializer):
-    student_name = serializers.CharField(source="studante.name")
+class ListRegistrationCourseSerializer(serializers.ModelSerializer):
+    student = serializers.ReadOnlyField(source="student.name")
+    period = serializers.SerializerMethodField()
 
     class Meta:
+        model = Registration
+        fields = ["student", "period"]
+
+class StudentSerializerV2(serializers.ModelSerializer):
+    class Meta:
         model = Student
-        fields = ["student_name"]
+        fields = ['id', 'name', 'email', 'cellphone']
+        

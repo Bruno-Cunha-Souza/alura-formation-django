@@ -21,5 +21,7 @@ class RegistrationsAdmin(admin.ModelAdmin):
 	list_display = ('id', 'student', 'course', 'period', 'registration_date')
 	list_display_links = ('id', 'student', 'course')
 	list_per_page = 10
+	search_fields = ('name', 'email', 'cpf')
+	ordering = ('student',)
 
 admin.site.register(Registration, RegistrationsAdmin)
